@@ -1,0 +1,54 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:DataGridTest.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="DataGridTest.Views.MainView"
+             x:DataType="vm:MainViewModel">
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainViewModel />
+	</Design.DataContext>
+
+	<DockPanel>
+
+		<StackPanel DockPanel.Dock="Top">
+			<Button Content="Enrich" Command="{Binding Enrich}" />
+		</StackPanel>
+
+		<Expander DockPanel.Dock="Bottom" Header="Expander" HorizontalAlignment="Stretch">
+			<StackPanel>
+				<TextBox />
+				<TextBox />
+			</StackPanel>
+		</Expander>
+
+		<DataGrid DockPanel.Dock="Top"
+				  ItemsSource="{Binding Transactions}">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Date" Binding="{Binding Date}"/>
+				<DataGridTextColumn Header="Object" Binding="{Binding Object}"/>
+				<DataGridTextColumn Header="Amount" Binding="{Binding Amount}"/>
+
+				<DataGridTemplateColumn Header="Category">
+					<DataTemplate>
+						<ComboBox ItemsSource="{Binding $parent[Window].((vm:MainViewModel)DataContext).Categories}"
+								  SelectedItem="{Binding Category}" />
+					</DataTemplate>
+				</DataGridTemplateColumn>
+
+				<DataGridTemplateColumn Header="Payee">
+					<DataTemplate>
+						<AutoCompleteBox ItemsSource="{Binding $parent[Window].((vm:MainViewModel)DataContext).Payees}"
+										 SelectedItem="{Binding Payee}" />
+					</DataTemplate>
+				</DataGridTemplateColumn>
+
+			</DataGrid.Columns>
+		</DataGrid>
+
+	</DockPanel>
+
+</UserControl>
